@@ -8,9 +8,10 @@ pipeline {
     stages {
         checkout scm: [
             $class: 'GitSCM',
-            branches: [[name: '*/main']],  // Убедитесь, что указана правильная ветка
+            branches: [[name: '*/master']],  // Убедитесь, что указана правильная ветка
             userRemoteConfigs: [[url: 'https://github.com/CryBaby734/AnimalRepository.git']]
         ]
+        }
 
         stage('Build') {
             steps {
