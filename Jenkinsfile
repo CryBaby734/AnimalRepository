@@ -1,24 +1,21 @@
-pipeline {
+ipeline {
     agent any
 
     environment {
-        // Задайте переменные окружения для вашего проекта, если необходимо
-        DOCKER_IMAGE = 'your-docker-image:latest'  // Название вашего Docker-образа
-        DOCKER_REGISTRY = 'your-docker-registry'   // Адрес вашего Docker-реестра (если используете)
+        DOCKER_IMAGE = 'animal-crud:latest'  // Можно использовать просто имя образа без реестра
     }
 
     stages {
         stage('Checkout') {
             steps {
-                // Клонируем репозиторий
-                git 'https://github.com/yourusername/yourproject.git'
+                git 'https://github.com/CryBaby734/AnimalRepository.git'
             }
         }
 
         stage('Build') {
             steps {
                 script {
-                    // Выполняем сборку проекта с помощью Gradle
+                    // Используем Gradle для сборки
                     sh './gradlew clean build'
                 }
             }
@@ -27,7 +24,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 script {
-                    // Строим Docker-образ
+                    // Строим Docker-образ с тегом
                     sh 'docker build -t $DOCKER_IMAGE .'
                 }
             }
@@ -36,7 +33,7 @@ pipeline {
         stage('Docker Run') {
             steps {
                 script {
-                    // Запускаем контейнер Docker (по необходимости можно настроить порты)
+                    // Запускаем контейнер
                     sh 'docker run -d -p 8080:8080 $DOCKER_IMAGE'
                 }
             }
@@ -45,38 +42,12 @@ pipeline {
         stage('Test') {
             steps {
                 script {
-                    // Запускаем тесты с помощью Gradle (если у вас есть тесты)
+                    // Запуск тестов с использованием Gradle
                     sh './gradlew test'
                 }
             }
         }
 
-        stage('Deploy') {
-            steps {
-                script {
-                    // Деплой вашего приложения (например, пушим образ в Docker-реестр)
-                    sh 'docker push $DOCKER_IMAGE'
-                }
-            }
-        }
-
-        stage('Clean up') {
-            steps {
-                script {
-                    // Останавливаем и удаляем контейнеры
-                    sh 'docker stop $(docker ps -q)'
-                    sh 'docker rm $(docker ps -a -q)'
-                }
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build and deployment successful!'
-        }
-        failure {
-            echo 'Build or deployment failed.'
-        }
+        // Этап "Deploy" можно опустить, если нет необходимости пушить образ в реестр
     }
 }
