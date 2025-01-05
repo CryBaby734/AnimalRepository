@@ -10,7 +10,7 @@ pipeline {
             steps {
                 checkout scm: [
                     $class: 'GitSCM',
-                    branches: [[name: '*/main']],  // Убедитесь, что указана правильная ветка
+                    branches: [[name: '*/main']],  // Замените 'master' на 'main'
                     userRemoteConfigs: [[url: 'https://github.com/CryBaby734/AnimalRepository.git']]
                 ]
             }
@@ -19,7 +19,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    // Используем Gradle для сборки
+                    // Убедитесь, что Gradle wrapper доступен
                     sh './gradlew clean build'
                 }
             }
@@ -51,7 +51,5 @@ pipeline {
                 }
             }
         }
-
-        // Этап "Deploy" можно опустить, если нет необходимости пушить образ в реестр
     }
 }
