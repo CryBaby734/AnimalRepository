@@ -1,10 +1,5 @@
 pipeline {
     agent any
-    environment {
-       // DOCKER_REGISTRY = 'your-docker-registry'
-        DOCKER_IMAGE = 'animal-crud'
-        DOCKER_TAG = 'latest'
-    }
     stages {
         stage('Build') {
             steps {
@@ -34,13 +29,5 @@ pipeline {
                 }
             }
         }
-//         stage('Push to Registry') {
-//             steps {
-//                 script {
-//                     sh "docker tag ${DOCKER_IMAGE}:${DOCKER_TAG} ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}"
-//                     sh "docker push ${DOCKER_REGISTRY}/${DOCKER_IMAGE}:${DOCKER_TAG}"
-//                 }
-//             }
-//         }
     }
 }
